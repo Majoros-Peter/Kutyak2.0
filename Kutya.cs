@@ -16,21 +16,21 @@ internal class Kutya
     public Nevek GetNev { get => Nev; }
     public Fajtak GetFajta { get => Fajta; }
 
-    private void SetName(int NevId, string Nevek)
+    private unsafe void SetName(int NevId, string *Nevek)
     {
         Nev.Id = NevId;
-        Nev.KutyaNev = File.ReadAllLines(Nevek).Where(G => G.StartsWith($"{NevId}")).Take(1).ToArray()[0].Split(';')[1];
+        Nev.KutyaNev = (*Nevek).Split('\n').Where(G => G.StartsWith($"{NevId}")).Take(1).ToArray()[0].Split(';')[1];
     }
-    private void SetFajta(int FajtaId, string Fajtak)
+    private unsafe void SetFajta(int FajtaId, string *Fajtak)
     {
-        string[] temp = File.ReadAllLines(Fajtak).Where(G => G.StartsWith($"{FajtaId}")).Take(1).ToArray()[0].Split(';');
+        string[] temp = (*Fajtak).Split('\n').Where(G => G.StartsWith($"{FajtaId}")).Take(1).ToArray()[0].Split(';');
 
         Fajta.Id = FajtaId;
         Fajta.Nev = temp[1];
         Fajta.EredetiNev = temp[2];
     }
 
-    public Kutya(string[] adatok, string Nevek, string Fajtak)
+    public unsafe Kutya(string[] adatok, string *Nevek, string *Fajtak)
     {
         Id = Convert.ToInt32(adatok[0]);
         EletKor = Convert.ToInt32(adatok[3]);
@@ -38,10 +38,5 @@ internal class Kutya
         
         SetFajta(Convert.ToInt32(adatok[1]), Fajtak);
         SetName(Convert.ToInt32(adatok[2]), Nevek);
-    }
-
-    public override string ToString()
-    {
-        return $"Id: {Id}; Eletkor: {EletKor}; UtolsoOrvosiEllenorzes: {UtolsoOrvosiEllenorzes}";
     }
 }

@@ -22,13 +22,26 @@ namespace Kutyak
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Kutya> kutyak = File.ReadAllLines("Kutyak.csv").Skip(1).Select(G => new Kutya(G.Split(';'), "KutyaNevek.csv", "KutyaFajtak.csv")).ToList();
+        List<Kutya> kutyak;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            lbKutyaNevekSzama.Content = $"3. feladat: Kutyák száma: {kutyak.DistinctBy(G=>G.GetNev).ToList().Count}";
+            unsafe
+            {
+                string fajtak = String.Join('\n', File.ReadAllLines("KutyaFajtak.csv"));
+                string nevek = String.Join('\n', File.ReadAllLines("KutyaNevek.csv"));
+
+                string* fajtakPointer = &fajtak;
+                string* nevekPointer = &nevek;
+
+                kutyak = File.ReadAllLines("Kutyak.csv").Skip(1).Select(G => new Kutya(G.Split(';'), nevekPointer, fajtakPointer)).ToList();
+                
+                GC.Collect();
+            }
+
+            lbKutyaNevekSzama.Content = $"3. feladat: Kutyák száma: {File.ReadAllLines("KutyaNevek.csv").Skip(1).Count()}";
 
             lbKutyakAtlagEletkora.Content = $"6. feladat: Kutyák átlag életkora: {Math.Round(kutyak.Average(G=>G.EletKor), 2)}";
 
@@ -39,7 +52,7 @@ namespace Kutyak
             lbLegjobbanTerheltNap.Content = $"9. feladat: Legjobban terhelt nap: {legtobbKutyaEgyNap.Key.ToShortDateString()}: {legtobbKutyaEgyNap.Count()} kutya";
         }
 
-        private void SaveFile()
+        private void SaveFile(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sfd = new()
             {
@@ -47,7 +60,12 @@ namespace Kutyak
                 DefaultExt = "txt"
             };
 
+            if (sfd.ShowDialog() == true)
+            {
+                File.WriteAllLines(sfd.FileName, kutyak.GroupBy(G=>G.GetNev.KutyaNev).Select(G=>$"{G.Key};{G.Count()}"));
 
+                lbTxtNeve.Content = $"10. feladat: {sfd.FileName.Split('\\')[^1]}";
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

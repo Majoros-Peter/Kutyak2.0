@@ -25,9 +25,11 @@
             <Separator/>
             
             <StackPanel>
-                <Label Content="8. feladat: Vizsgált kutyafajták a kiválasztott napon: "/>
-                <DatePicker x:Name="dpVizsgaltKutyaFajtak" SelectedDate="2018. 1. 10."/>
-                <Button Content="Lekérdez" Click="Button_Click"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="8. feladat: Vizsgált kutyafajták a kiválasztott napon: "/>
+                    <DatePicker x:Name="dpVizsgaltKutyaFajtak" SelectedDate="2018. 1. 10."/>
+                    <Button Content="Lekérdez" Click="Button_Click"/>
+                </StackPanel>
                 <ListBox x:Name="lbVizsgaltKutyaFajtak" Margin="50, 0, 0, 0"/>
             </StackPanel>
             
@@ -41,6 +43,7 @@
             
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="lbTxtNeve" Content="10. feladat:"/>
+                <Button Content="Mentés" Click="SaveFile"/>
             </StackPanel>
         </StackPanel>
     </Grid>
