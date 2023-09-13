@@ -1,0 +1,47 @@
+﻿<Window x:Class="Kutyak.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kutyak"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lbKutyaNevekSzama" Content="3. feladat:"/>
+            </StackPanel>
+            
+            <Separator/>
+            
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lbKutyakAtlagEletkora" Content="6. feladat:"/>
+            </StackPanel>
+            
+            <Separator/>
+            
+            <Label x:Name="lbLegidosebbKutya" Content="7. feladat:"/>
+            
+            <Separator/>
+            
+            <StackPanel>
+                <Label Content="8. feladat: Vizsgált kutyafajták a kiválasztott napon: "/>
+                <DatePicker x:Name="dpVizsgaltKutyaFajtak" SelectedDate="2018. 1. 10."/>
+                <Button Content="Lekérdez" Click="Button_Click"/>
+                <ListBox x:Name="lbVizsgaltKutyaFajtak" Margin="50, 0, 0, 0"/>
+            </StackPanel>
+            
+            <Separator/>
+            
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lbLegjobbanTerheltNap" Content="9. feladat:"/>
+            </StackPanel>
+            
+            <Separator/>
+            
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lbTxtNeve" Content="10. feladat:"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
